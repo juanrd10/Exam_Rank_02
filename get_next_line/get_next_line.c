@@ -12,76 +12,74 @@
 
 #include "get_next_line.h"
 
-size_t		ft_strlen(const char *s)
+size_t		ft_strlen(const char *str)
 {
-	int		d;
-
-	d = 0;
-	while (s[d] != '\0')
-	{
-		d++;
-	}
-	return (d);
+	int		count = 0;
+	while (str[count] != '\0')
+		count++;
+	return (count);
 }
 
-char		*ft_strchr(const char *s, int c)
+char		*ft_strchr(const char *str, int ch_find)
 {
-	if (s == NULL)
+	int		count = 0;
+	if (str == NULL)
 		return (0);
-	while (*s)
+	if (str[count] == '\0')
 	{
-		if (*s == (char)c)
-			return ((char *)s);
-		s++;
+		if (ch_find == '\0')
+			return ((char *)str);
+		return (0);
 	}
-	if ((char)c == '\0')
-		return ((char *)s);
+	while (str[count] != '\0')
+	{
+		if (str[count] == ch_find)
+			return ((char *)str + count);
+		count++;
+	}
 	return (0);
 }
 
-char		*ft_strdup(const char *s1)
+char		*ft_strdup(const char *str)
 {
-	size_t	i;
+	size_t	count;
 	char	*ret;
 
-	i = 0;
-	if ((ret = (char *)malloc(sizeof(char) * ft_strlen(s1) + 1)) != NULL)
+	count = 0;
+	if ((ret = (char *)malloc(sizeof(char) * ft_strlen(str) + 1)) == NULL)
+		return (NULL);
+	while (str[count] != '\0')
 	{
-		while (s1[i])
-		{
-			ret[i] = s1[i];
-			i++;
-		}
-		ret[i] = '\0';
-		return (ret);
+		ret[count] = str[count];
+		count++;
 	}
-	return (NULL);
+	ret[count] = '\0';
+	return (ret);
 }
 
 char		*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*ret;
-	size_t	i;
+	size_t	count;
 
-	i = 0;
+	count = 0;
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
-	ret = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)) + 1);
-	if (!ret)
+	if ((ret = (char *)malloc(sizeof(char *) * (ft_strlen(s1) + ft_strlen(s2)) + 1)) == NULL)
 		return (NULL);
-	while (*s1)
+	while (*s1 != '\0')
 	{
-		ret[i] = *s1;
-		i++;
+		ret[count] = *s1;
+		count++;
 		s1++;
 	}
-	while (*s2)
+	while (*s2 != '\0')
 	{
-		ret[i] = *s2;
-		i++;
+		ret[count] = *s2;
+		count++;
 		s2++;
 	}
-	ret[i] = '\0';
+	ret[count] = '\0';
 	return (ret);
 }
 
