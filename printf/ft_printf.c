@@ -130,7 +130,7 @@ int	ft_printf(char *format, ...)							//////***************Funcion principal***
 			count++;
 		}
 	}
-    va_end(valist)
+	va_end(valist);
 	return (ret);				//Retornar caracteres escritos
 }
 
