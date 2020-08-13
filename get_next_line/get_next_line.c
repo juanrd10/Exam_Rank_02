@@ -6,7 +6,7 @@
 /*   By: juanrodr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/03 09:44:50 by juanrodr          #+#    #+#             */
-/*   Updated: 2020/08/04 12:41:26 by juanrodr         ###   ########.fr       */
+/*   Updated: 2020/08/13 13:07:02 by juanrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 size_t		ft_strlen(const char *str)						/////***************StrLen basico***************/////
 {
 	size_t	count = 0;
+
 	while (str[count] != '\0')
 		count++;
 	return (count);
@@ -82,21 +83,19 @@ int			get_next_line(char **line)						/////***************Creamos Func Principal
 {
 	static char	*mem;				//Para almacenar lo leido
 	char		buffer[256 + 1];	//Para leer
-	char		*tmp;				//Para pasar el join antes de mem
-	int			ret;				//Para comprobar el read
-	char		*aux1;
-	char		*aux2;
+	char		*tmp, *aux1, *aux2;	//Para pasar el join antes de mem
+	int			b_read;				//Para calcular bytes leidos
 
 	if (!line)
 		return (-1);
 	while (ft_strchr(mem, '\n') == NULL)	//Mientras que no este \n avanzamos guardandolo y vemos si \n de la anterior iteracion
 	{
-		ret = read(0, buffer, 256);			//Guardamos 0-256 caracteres a buffer de std_imput y en ret el n leido
-		if (ret < 0)						//Comprobacion si da error read
+		b_read = read(0, buffer, 256);			//Guardamos 0-256 caracteres a buffer de std_imput y en ret el n leido
+		if (b_read < 0)						//Comprobacion si da error read
 			return (-1);					//Devolver error (-1)
-		if (ret == 0)						//Cero bytes leidos
+		if (b_read == 0)						//Cero bytes leidos
 			break ;
-		buffer[ret] = '\0';					//Guardamos 0 de fin de read
+		buffer[b_read] = '\0';					//Guardamos 0 de fin de read
 		if (!mem)							//Si nada guardado de antes guardamos buffer
 			mem = ft_strdup(buffer);
 		else								//Si ya guardado algo
@@ -107,26 +106,25 @@ int			get_next_line(char **line)						/////***************Creamos Func Principal
 		}
 	}						/////***************EN ESTE PUNTO LINEA GUARDA EN MEM***************/////
 							/////***************SOLO QUEDA STRDUP EN LINE DE MEM***************/////
-	if (!mem && !ret)
+	if (!mem && !b_read)
 	{
-		*line = ft_strdup("");
-		free(mem);
+		*line = ft_strdup("");				//Guardamos un \0, no hemos leido nada
 		return (0);							//Devolver lectura completada (0)
 	}
 	else if ((aux1 = ft_strchr(mem, '\n')))	//Comprobamos si queda guardado algun \n en mem
 	{
-		*aux1 = 0;							//
-		*line = ft_strdup(mem);
-		aux2 = ft_strdup(++aux1);
-		free(mem);
-		mem = aux2;
+		*aux1 = 0;							//Para que al hacer el strdup pare en donde este el \n
+		*line = ft_strdup(mem);				//Guardarmos en line la linea
+		aux2 = ft_strdup(++aux1);			//Para la siguiente iteracion guardamos lo siguiente al antiguo \n, actual \0
+		free(mem);							//Liberamos
+		mem = aux2;							//Guardamos en mem lo sobrante
 	}
 	else
 	{
-		*line = ft_strdup(mem);
-		free(mem);
-		mem = NULL;
-		return (0);							//Devolver lectura completada (0)
+		*line = ft_strdup(mem);				//Guardamos todo lo que quede
+		free(mem);							//Liberamos
+		mem = NULL;							//Lo ponemos nulo
+		return (0);							//Devolvemos lectura completada (0)
 	}
 	return (1);								//Fin de linea leida (1)
 }
