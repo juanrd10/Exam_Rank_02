@@ -12,16 +12,16 @@
 
 #include "get_next_line.h"
 
-size_t		ft_strlen(const char *str)						/////***************StrLen basico***************/////
+int		ft_strlen(char *str)						/////***************StrLen basico***************/////
 {
-	size_t	count = 0;
+	int 	count = 0;
 
 	while (str[count] != '\0')
 		count++;
 	return (count);
 }
 
-char		*ft_strchr(const char *str, int ch_find)		/////***************StrChr basico***************/////
+char		*ft_strchr(char *str, int ch_find)		/////***************StrChr basico***************/////
 {
 	int		count = 0;
 
@@ -30,15 +30,15 @@ char		*ft_strchr(const char *str, int ch_find)		/////***************StrChr basic
 	while (str[count] != '\0')								//Recorremos hasta encontrar caracter deseado
 	{
 		if (str[count] == ch_find)
-			return ((char *)str + count);
+			return (str + count);
 		count++;
 	}
 	return (NULL);
 }
 
-char		*ft_strdup(const char *str)						/////***************StrDup básico***************/////
+char		*ft_strdup(char *str)						/////***************StrDup básico***************/////
 {
-	size_t	count = 0;
+	int 	count = 0;
 	char	*ret;
 
 	if ((ret = (char *)malloc(sizeof(char) * ft_strlen(str) + 1)) == NULL)		//Alocamos tamaño + 1
@@ -52,10 +52,10 @@ char		*ft_strdup(const char *str)						/////***************StrDup básico*******
 	return (ret);
 }
 
-char		*ft_strjoin(char const *s1, char const *s2)		/////***************StrJoin basico***************/////
+char		*ft_strjoin(char *s1, char *s2)		/////***************StrJoin basico***************/////
 {
 	char	*ret;
-	size_t	count = 0;
+	int 	count = 0;
 
 	if (s1 == NULL || s2 == NULL)							//Comprobamos nulos
 		return (NULL);
@@ -79,7 +79,7 @@ int			get_next_line(char **line)						/////***************Creamos Func Principal
 {
 	static char	*mem;				//Para almacenar lo leido
 	char		buffer[257];	    //Para leer
-	char		*tmp, *aux1, *aux2;	//Para pasar el join antes de mem
+	char		*tmp, *aux1, *aux2;	//Para pasar el join antes de mem y para separar mem hasta el \n luego
 	int			b_read;				//Para calcular bytes leidos
 
 	if (!line)
