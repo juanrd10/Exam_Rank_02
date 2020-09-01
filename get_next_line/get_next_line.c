@@ -38,10 +38,9 @@ char		*ft_strchr(const char *str, int ch_find)		/////***************StrChr basic
 
 char		*ft_strdup(const char *str)						/////***************StrDup básico***************/////
 {
-	size_t	count;
+	size_t	count = 0;
 	char	*ret;
 
-	count = 0;
 	if ((ret = (char *)malloc(sizeof(char) * ft_strlen(str) + 1)) == NULL)		//Alocamos tamaño + 1
 		return (NULL);
 	while (str[count] != '\0')								//Recorremos todo guardando
@@ -56,9 +55,8 @@ char		*ft_strdup(const char *str)						/////***************StrDup básico*******
 char		*ft_strjoin(char const *s1, char const *s2)		/////***************StrJoin basico***************/////
 {
 	char	*ret;
-	size_t	count;
+	size_t	count = 0;
 
-	count = 0;
 	if (s1 == NULL || s2 == NULL)							//Comprobamos nulos
 		return (NULL);
 	if ((ret = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)) + 1)) == NULL)
@@ -66,15 +64,13 @@ char		*ft_strjoin(char const *s1, char const *s2)		/////***************StrJoin b
 	while (*s1)										//Alcamos primera
 	{
 		ret[count] = *s1;
-		count++;
-		s1++;
+		++count && ++s1;
 	}
 	while (*s2)										//Alocamos segunda detras de la primera
 	{
 		ret[count] = *s2;
-		count++;
-		s2++;
-	}
+		++count && ++s2;
+    }
 	ret[count] = '\0';										//Guardamos el \0
 	return (ret);
 }
@@ -82,7 +78,7 @@ char		*ft_strjoin(char const *s1, char const *s2)		/////***************StrJoin b
 int			get_next_line(char **line)						/////***************Creamos Func Principal***************/////
 {
 	static char	*mem;				//Para almacenar lo leido
-	char		buffer[256 + 1];	//Para leer
+	char		buffer[257];	    //Para leer
 	char		*tmp, *aux1, *aux2;	//Para pasar el join antes de mem
 	int			b_read;				//Para calcular bytes leidos
 
